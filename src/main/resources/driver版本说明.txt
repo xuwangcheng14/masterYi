@@ -1,0 +1,9 @@
+chromedriver=v2.40 对应chrome版本为v66-68
+chrome下载地址：http://npm.taobao.org/mirrors/chromedriver/
+
+iedriver=v2.40 为32位
+iedriver下载地址：http://selenium-release.storage.googleapis.com/index.html
+
+operadriver由于用的人比较少，暂时没有放进来
+
+firefox驱动selenim中已经自带了，https://github.com/mozilla/geckodriver/releases/自行下载

@@ -1,0 +1,28 @@
+title: 易大师框架测试
+# 该用例执行失败了是否中断整个测试流程？默认为false,可单独给每个用例配置
+failInterrupt: false
+# tag为每个用例的特有标签，在分布式运行时，标签相同的用例将会被分配到同一个执行机器
+tag: default
+# 浏览器类型
+browserType: chrome
+# 指定测试报告处理器
+reportManager: 
+  - com.dcits.yi.ui.report.manage.CucumberReportManager
+  - com.dcits.yi.ui.report.manage.DefaultExeclReportManager
+
+# 用例组
+cases:
+  - name: 163邮箱测试 
+    method: com.dcits.test.mail.usecase.MailTest.mailTest
+    # 是否执行，为flase该用例不会执行
+    enabled: true   
+    # tag: 2
+    failInterrupt: false
+  
+  - name: 百度搜索
+    method: com.dcits.test.baidu.usecase.Baidu.search
+    enabled: true
+    failInterrupt: true
+
+  
+  

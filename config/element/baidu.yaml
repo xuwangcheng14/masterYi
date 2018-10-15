@@ -1,0 +1,7 @@
+BaiduSearchPage: 
+  url: https://www.baidu.com/
+  搜索框: id kw
+  搜索按钮: id su
+  
+SearchResultPage:
+  搜索结果: xpath //*[@id="1"]/h3/a
