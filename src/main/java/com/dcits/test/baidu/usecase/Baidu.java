@@ -14,13 +14,8 @@ public class Baidu {
 		page.open();
 		page.search("xuwangcheng.com");
 		result.clickFirst();	
-		result.sleep(5);
-		System.out.println(page.getDriver().getWindowHandle());
 		page.switchWindow(1);
-		System.out.println(page.getDriver().getWindowHandle());
 		page.switchWindow(0);
-		System.out.println(page.getDriver().getWindowHandle());
 		page.refresh();
-		System.out.println(page.getDriver().getWindowHandle());
 	}
 }
