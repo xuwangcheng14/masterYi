@@ -3,9 +3,9 @@
 
 #### 项目介绍
 基于PageMode模型进行测试代码编程的UI自动化测试框架    
-底层由selenium-java框架支持，使用yaml文件定义元素定位规则和用例执行规则  
+底层由selenium-java框架支持，使用yaml文件定义元素定位和用例执行规则  
 
-在开发过程中参考了以下优秀的自动化测试框架的某些思想，在此感谢：  
+在开发过程中参考了以下优秀的自动化测试框架的某些思路或思想，在此感谢：  
 - [Sweetest-小而美的自动化测试框架](https://github.com/tonglei100/sweetest)
 - [Bee-有赞测试团队开发的自动化测试框架](https://segmentfault.com/a/1190000015057723)
 
