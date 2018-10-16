@@ -64,10 +64,10 @@ Eclipse 2018
 > 元素名称: 定位器类型 参数[序号] frame名称1|frame名称2|frame名称2
  
 **元素名称：** 可以使用中文名称，能够清晰明了的表明该元素的功能和类型，如loginNameInput、loginBtn等；  
- **定位器类型：**  包括常用的id、name、tagname、xpath、classname、linktext，还包括partiallinktext(链接文本局部匹配)、cssselector(CSS选择器)，这些都是对Selenium的By对象的关键字封装；
- **参数： ** 需要注意的时，如果参数中包含空格，请务必使用单引号将该部分包裹起来；
- **序号：**  对于非xpath类型的定位规则，你可以在参数后添加  _[序号值]_  来指定元素在最终获取的列表的下标，起始为1，可省略，默认为0；
- **frame名称：** 在最上面定义该页面所有可能用到的frame
+ **定位器类型：**  包括常用的id、name、tagname、xpath、classname、linktext，还包括partiallinktext(链接文本局部匹配)、cssselector(CSS选择器)，这些都是对Selenium的By对象的关键字封装；  
+ **参数： ** 需要注意的时，如果参数中包含空格，请务必使用单引号将该部分包裹起来；  
+ **序号：**  对于非xpath类型的定位规则，你可以在参数后添加  _[序号值]_  来指定元素在最终获取的列表的下标，起始为1，可省略，默认为0；  
+ **frame名称：** 在最上面定义该页面上的frame元素定位规则，在普通元素定义规则最后通过引入定义的frame元素名称来表明该元素位于哪个frame下，涉及到多层frame嵌套的
 
 
 
