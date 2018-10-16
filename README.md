@@ -3,7 +3,7 @@
 
  **_当前版本：0.0.1beta_** 
 
-#### 项目介绍
+## 项目介绍
  >  **目前文档不够齐全，作者也是刚刚使用，希望对此框架后续开发有兴趣的朋友大牛们进QQ群 468324085 一起交流学习，加群验证： 易大师。**   
 
 
@@ -14,15 +14,17 @@
 - [Sweetest-小而美的自动化测试框架](https://github.com/tonglei100/sweetest)
 - [Bee-有赞测试团队开发的自动化测试框架](https://segmentfault.com/a/1190000015057723)
 
-### 开发环境
+## 开发环境
 jdk >= 1.7  
 Eclipse 2018
 
-### 快速开始
+## 快速开始
  **通过以下简单的百度搜索示例来了解该框架如何使用：** 
-- Clone框架代码到本地  
-- 将Maven项目导入到eclipse中  
-- 在根目录下的config/element目录下新建baidu.yaml，在此文件中定义相关页面元素的定位规则：
+-  Clone框架代码到本地   
+
+-  将Maven项目导入到eclipse中 
+  
+-  在根目录下的config/element目录下新建baidu.yaml，在此文件中定义相关页面元素的定位规则： 
 ![baidu.yaml](https://images.gitee.com/uploads/images/2018/1015/180007_24b29a9a_431003.png "屏幕截图.png") 
 
 - 在com.dcits.test包下新建包baidu.data、baidu.page、baidu.usecase，分别表示测试数据、测试页面、测试用例
@@ -36,34 +38,58 @@ Eclipse 2018
 ![4](https://images.gitee.com/uploads/images/2018/1015/180638_790245b7_431003.png "屏幕截图.png")
 
 - 在PageModel类中定义相关业务方法，如上图
+
 - 在usecase包下新建Baidu的测试类，新建baidu搜索的测试方法，同时在方法上加上UseCase注解
 ![5](https://images.gitee.com/uploads/images/2018/1015/180917_84cb0c5e_431003.png "屏幕截图.png")
+
 - 如图所示，右键Run运行Baidu测试用例
 ![6](https://images.gitee.com/uploads/images/2018/1015/183344_c4b9926d_431003.png "屏幕截图.png")
+
 - 下图为测试日志，在根目录下的report目录下会生成一个html报告
 ![7](https://images.gitee.com/uploads/images/2018/1015/183457_58884c3c_431003.png "屏幕截图.png")
 ![8](https://images.gitee.com/uploads/images/2018/1015/183522_f7f12f20_431003.png "屏幕截图.png")
 
-### 框架使用详解
+## 框架使用详解
 
-#### 页面元素定义yaml
+### 页面元素定义yaml文件
 
-#### PageModel模型类
+在项目根目录下config/elemment目录下保存元素定义的yaml文件，一般相同或者相似模块的页面中元素定义在同一个文件中，在该目录下，你也可以新建不同的文件夹以对不同系统、模块、功能的页面进行合理分类，如图：  
 
-#### 测试用例类
+![9](https://images.gitee.com/uploads/images/2018/1016/110952_fc4f236a_431003.png "屏幕截图.png")
+
+#### 元素定位
+![10](https://images.gitee.com/uploads/images/2018/1016/111157_5e1971b2_431003.png "屏幕截图.png")
+
+如上所示，其中 LoginPage、MailPage等以Page结尾表示单个页面，再其下定义包括url、frame/iframe/frameset元素、普通元素的定位规则信息，定位规则的书写格式为：
+> 元素名称: 定位器类型 参数[序号] frame名称1|frame名称2|frame名称2
+ 
+**元素名称：** 可以使用中文名称，能够清晰明了的表明该元素的功能和类型，如loginNameInput、loginBtn等；  
+ **定位器类型：**  包括常用的id、name、tagname、xpath、classname、linktext，还包括partiallinktext(链接文本局部匹配)、cssselector(CSS选择器)，这些都是对Selenium的By对象的关键字封装；
+ **参数： ** 需要注意的时，如果参数中包含空格，请务必使用单引号将该部分包裹起来；
+ **序号：**  对于非xpath类型的定位规则，你可以在参数后添加  _[序号值]_  来指定元素在最终获取的列表的下标，起始为1，可省略，默认为0；
+ **frame名称：** 在最上面定义该页面所有可能用到的frame
+
+
+
+
+
+
+### PageModel模型类
+
+### 测试用例类
 
 #### 测试数据生成器
 
-#### 常用页面操作
+### 常用页面操作
 
-#### 测试报告处理器
+### 测试配置文件seleniumConfig.properties
 
-#### 使用yaml编辑测试用例
+### 自动生成PageModel类
 
-#### jar包运行
+### 测试报告处理器
 
-#### 测试配置文件seleniumConfig.properties
+### 使用yaml编辑测试用例
 
-#### 自动生成PageModel类
+### jar包运行
 
-#### 扩展改进
+### 扩展改进
