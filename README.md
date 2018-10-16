@@ -58,16 +58,52 @@ Eclipse 2018
 ![9](https://images.gitee.com/uploads/images/2018/1016/110952_fc4f236a_431003.png "屏幕截图.png")
 
 #### 元素定位
-![10](https://images.gitee.com/uploads/images/2018/1016/111157_5e1971b2_431003.png "屏幕截图.png")
+```
+# 网易邮箱登录页面
+LoginPage: 
+  url: https://mail.163.com/
+  
+  loginframe: id x-URS-iframe
+  
+  用户名输入框: xpath //*[@name="email"] loginframe     
+  密码输入框: xpath //*[@name="password"] loginframe
+  登录按钮: id dologin loginframe
+  
+# 网易邮箱页面
+MailPage: 
+  writeframe: xpath //div[@class="APP-editor-edtr"]/iframe
+
+  用户标签: id spnUid
+  写信按钮: xpath //div[@id="dvNavTop"]/ul/li[2]/span[2]  
+  收信人: className bz0
+  收信人地址: className nui-editableAddr-ipt
+  发信按钮: xpath //span[text()="发送"][1]
+  
+  发送成功确认按钮: xpath //*[@class="nui-msgbox-ft-btns"]/div/span
+  收信按钮: xpath //div[@id="dvNavTop"]/ul/li[1]
+  邮件搜索框: classname nui-ipt-input[1]
+  收信列表链接: xpath //span[contains(@id,"SubjectSpan")][1]
+  回复按钮: xpath '//span[text()="回 复"][1]'
+
+  邮件内容输入框: xpath //html/body writeframe
+  
+  登出按钮: xpath /html/body/header/div/ul/li[last()]/a
+  
+# 网易邮箱成功退出的页面
+MailLogoutPage: 
+  重新登录按钮: id js-relogin
+```
 
 如上所示，其中 LoginPage、MailPage等以Page结尾表示单个页面，再其下定义包括url、frame/iframe/frameset元素、普通元素的定位规则信息，定位规则的书写格式为：
 > 元素名称: 定位器类型 参数[序号] frame名称1|frame名称2|frame名称2
  
 **元素名称：** 可以使用中文名称，能够清晰明了的表明该元素的功能和类型，如loginNameInput、loginBtn等；  
- **定位器类型：**  包括常用的id、name、tagname、xpath、classname、linktext，还包括partiallinktext(链接文本局部匹配)、cssselector(CSS选择器)，这些都是对Selenium的By对象的关键字封装；  
- **参数： ** 需要注意的时，如果参数中包含空格，请务必使用单引号将该部分包裹起来；  
- **序号：**  对于非xpath类型的定位规则，你可以在参数后添加  _[序号值]_  来指定元素在最终获取的列表的下标，起始为1，可省略，默认为0；  
- **frame名称：** 在最上面定义该页面上的frame元素定位规则，在普通元素定义规则最后通过引入定义的frame元素名称来表明该元素位于哪个frame下，涉及到多层frame嵌套的
+**定位器类型：**  包括常用的id、name、tagname、xpath、classname、linktext，还包括partiallinktext(链接文本局部匹配)、cssselector(CSS选择器)，这些都是对Selenium的By对象的关键字封装；  
+**参数：** 需要注意的时，如果参数中包含空格，请务必使用单引号将该部分包裹起来；  
+**序号：**  对于非xpath类型的定位规则，你可以在参数后添加  _[序号值]_  来指定元素在最终获取的列表的下标，起始为1，可省略，默认为0；  
+**frame名称：** 在最上面定义该页面上的frame元素定位规则，在普通元素定义规则最后通过引入定义的frame元素名称来表明该元素位于哪个frame下，涉及到多层frame嵌套的请按顺序使用竖线"|"来分隔。
+
+
 
 
 
