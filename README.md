@@ -15,45 +15,61 @@
 - [Bee-有赞测试团队开发的自动化测试框架](https://segmentfault.com/a/1190000015057723) 
 - 同时感谢功能强大的java工具包  [Hutool](https://gitee.com/xuwangcheng/hutool)
 
+框架中使用的大都数工具方法都由Hutool工具包封装，建议有兴趣的小伙伴自行阅读Wiki，在框架扩展和脚本编写中可以省去很多精力和时间：
+http://hutool.mydoc.io/
+
 
 ## 开发环境
-jdk >= 1.7  
-Eclipse 2018
+
+ _jdk >= 1.7  
+Eclipse 2018_ 
+
+你需要了解以下知识：
+-  [java编程基础](https://www.java.com/zh_CN/)   
+- [自动化测试框架selenium](http://www.51testing.com/zhuanti/selenium.html) 
+- [yaml](https://www.jianshu.com/p/97222440cd08)
 
 ## 快速开始
  **通过以下简单的百度搜索示例来了解该框架如何使用：** 
--  Clone框架代码到本地   
+1.  Clone框架代码到本地  
 
--  将Maven项目导入到eclipse中 
-  
--  在根目录下的config/element目录下新建baidu.yaml，在此文件中定义相关页面元素的定位规则： 
+2.  导入到eclipse中为Maven项目 
+
+3. 在项目根目录下的config/element目录下新建baidu.yaml，在此文件中定义相关页面元素的定位规则： 
+
 ![baidu.yaml](https://images.gitee.com/uploads/images/2018/1015/180007_24b29a9a_431003.png "屏幕截图.png") 
 
-- 在com.dcits.test包下新建包baidu.data、baidu.page、baidu.usecase，分别表示测试数据、测试页面、测试用例
+4. 在com.dcits.test包下新建包baidu.data、baidu.page、baidu.usecase，分别表示测试数据、测试页面、测试用例
+
 ![1](https://images.gitee.com/uploads/images/2018/1015/180218_95d5645e_431003.png "屏幕截图.png")
 
-- 在page包下新建两个PageModel类，类名需要同baidu.yaml中定义的页面名称相同，同时需要继承BasePage类，如下：
+5. 在page包下新建两个PageModel类，类名需要同baidu.yaml中定义的页面名称相同，同时需要继承BasePage类，如下：
+
 ![2](https://images.gitee.com/uploads/images/2018/1015/180431_2ba9cc4c_431003.png "屏幕截图.png")
 
-- 分别在两个PageModel类中定义相关的PageElement对象，对象名称也需要同baidu.yaml定义的元素名称相同：
+6. 分别在两个PageModel类中定义相关的PageElement对象，对象名称也需要同baidu.yaml定义的元素名称相同：
+
 ![3](https://images.gitee.com/uploads/images/2018/1015/180623_faf66970_431003.png "屏幕截图.png")
 ![4](https://images.gitee.com/uploads/images/2018/1015/180638_790245b7_431003.png "屏幕截图.png")
 
-- 在PageModel类中定义相关业务方法，如上图
+7. 在PageModel类中定义相关业务方法，如上图
 
-- 在usecase包下新建Baidu的测试类，新建baidu搜索的测试方法，同时在方法上加上UseCase注解
+8. 在usecase包下新建Baidu的测试类，新建baidu搜索的测试方法，同时在方法上加上UseCase注解
+
 ![5](https://images.gitee.com/uploads/images/2018/1015/180917_84cb0c5e_431003.png "屏幕截图.png")
 
-- 如图所示，右键Run运行Baidu测试用例
+9. 如图所示，右键Run运行Baidu测试用例
+
 ![6](https://images.gitee.com/uploads/images/2018/1015/183344_c4b9926d_431003.png "屏幕截图.png")
 
-- 下图为测试日志，在根目录下的report目录下会生成一个html报告
+10. 下图为测试日志，在根目录下的report目录下会生成一个html报告
+
 ![7](https://images.gitee.com/uploads/images/2018/1015/183457_58884c3c_431003.png "屏幕截图.png")
 ![8](https://images.gitee.com/uploads/images/2018/1015/183522_f7f12f20_431003.png "屏幕截图.png")
 
 ## 框架使用详解
 
-### 页面元素定义yaml文件
+### 元素yaml文件
 
 在项目根目录下config/elemment目录下保存元素定义的yaml文件，一般相同或者相似模块的页面中元素定义在同一个文件中，在该目录下，你也可以新建不同的文件夹以对不同系统、模块、功能的页面进行合理分类，如图：  
 
@@ -174,10 +190,76 @@ public class MailTestData extends BaseDataModel {
 
 - 自定义的数据模型类需要继承BaseDataModel类，同时实现其中initData方法；  
 - 在initData方法中定义数据的生成方式，在实际使用中，可自行调用initData方法来生成新的一组数据；
-- 在BaseDataModel类中提供了以下众多的数据生成方法或者工具方法：
+- 测试数据相关的配置文件请放置于项目根目录下的config/data目录下；  
+- 在BaseDataModel类中提供了以下众多的数据生成方法或者工具方法，你也可以执行拓展更多的数据生成方法，比如 **从外部接口获取数据、调用本地程序或者脚本生成** 等：
+```
+       /**
+	 * 执行sql并获取,返回多条信息只会取第一条
+	 * @param dbName seleniumConfig.properties配置文件中定义的数据库名称
+	 * @param sql
+	 * @return
+	 * @throws Exception 
+	 */
+	public String generateBySql(String dbName, String sql)
 
+       /**
+	 * 根据正则生成指定的值
+	 * @param regexStr
+	 * @return
+	 */
+	public String generateByRegex(String regexStr)
+
+       /**
+	 * 获取随机数
+	 * @param max 最大值         
+	 * @param min 最小值
+	 * @return
+	 */
+	public int generateRandomNum(int max, int min)
+       /**
+	 * 生成随机字符串
+	 * 
+	 * @param mode 模式 0-只包含大写字母   1-只包含小写字母   2-包含大小写字母   3-同时包含大小写字母和数字
+	 * @param length 字符串长度
+	 * @return
+	 */
+	public String generateRandomString(int mode, int length) 
+
+       /**
+	 * 从txt配置文件中读取数据，需要自行处理
+	 * @param path
+	 * @return
+	 */
+	public String readFromTxt(String path)
+
+       /**
+	 * 从csv中读取内容
+	 * @param path
+	 * @return CsvRow对象表示一行数据，通过getRawList()方法获取行数据
+	 */
+	public List<CsvRow> readFromCsv(String path)
+
+       /**
+	 * 从excel读取数据
+	 * @param path
+	 * @param sheetNum sheet序号，从0开始
+	 * @return 行的集合，一行使用List表示
+	 */
+	public List<List<Object>> readFromExcel(String path, int sheetNum)
+       /**
+	 * 从excel读取数据,默认第一个sheet页
+	 * @param path
+	 * @return 行的集合，一行使用List表示
+	 */
+	public List<List<Object>> readFromExcel(String path)    
+```
 
 ### 常用元素、页面操作
+
+框架中封装了
+
+#### 页面操作
+
 
 ### 自动生成PageModel类
 
