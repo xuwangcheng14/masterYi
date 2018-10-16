@@ -12,7 +12,9 @@
 
 在开发过程中参考了以下优秀的自动化测试框架的某些思路或思想，在此感谢：  
 - [Sweetest-小而美的自动化测试框架](https://github.com/tonglei100/sweetest)
-- [Bee-有赞测试团队开发的自动化测试框架](https://segmentfault.com/a/1190000015057723)
+- [Bee-有赞测试团队开发的自动化测试框架](https://segmentfault.com/a/1190000015057723) 
+- 同时感谢功能强大的java工具包  [Hutool](https://gitee.com/xuwangcheng/hutool)
+
 
 ## 开发环境
 jdk >= 1.7  
@@ -95,36 +97,97 @@ MailLogoutPage:
 ```
 
 如上所示，其中 LoginPage、MailPage等以Page结尾表示单个页面，再其下定义包括url、frame/iframe/frameset元素、普通元素的定位规则信息，定位规则的书写格式为：
+
 > 元素名称: 定位器类型 参数[序号] frame名称1|frame名称2|frame名称2
  
-**元素名称：** 可以使用中文名称，能够清晰明了的表明该元素的功能和类型，如loginNameInput、loginBtn等；  
-**定位器类型：**  包括常用的id、name、tagname、xpath、classname、linktext，还包括partiallinktext(链接文本局部匹配)、cssselector(CSS选择器)，这些都是对Selenium的By对象的关键字封装；  
+**元素名称：** 可以使用中文名称，最好能够清晰明了的表明该元素的功能和类型，如loginNameInput、loginBtn等；  
+
+**定位器类型：**  包括常用的id、name、tagname、xpath、classname、linktext，还包括partiallinktext(链接文本局部匹配)、cssselector(CSS选择器)，这些都是对Selenium的By对象的关键字封装；
+  
 **参数：** 需要注意的时，如果参数中包含空格，请务必使用单引号将该部分包裹起来；  
+
 **序号：**  对于非xpath类型的定位规则，你可以在参数后添加  _[序号值]_  来指定元素在最终获取的列表的下标，起始为1，可省略，默认为0；  
+
 **frame名称：** 在最上面定义该页面上的frame元素定位规则，在普通元素定义规则最后通过引入定义的frame元素名称来表明该元素位于哪个frame下，涉及到多层frame嵌套的请按顺序使用竖线"|"来分隔。
 
+### PageModel类
+一个PageModel类对应一个页面，PageModel类的成员变量对应页面中的成员变量，而类中方法则对应页面中的一些业务操作，比如登录、菜单搜索、公用的表单填写等：
+
+```
+public class LoginPage extends BasePage {
+	
+	public PageElement 用户名输入框;	
+	public PageElement 密码输入框;	
+	public PageElement 登录按钮;	
+	
+	
+	public void 登录(String username, String passwd) {
+		用户名输入框.sendKeys(username, true);
+		密码输入框.sendKeys(passwd, true);
+		//等待验证码，手工输入
+		//sleep(20);
+		登录按钮.click();
+		sleep(1);
+		screenshot();
+	}
+}
+```
+
+- PageModel需要继承BasePage类，在BasePage类中封装了一些常用的页面操作方法，例如 打开浏览器、截图、断言、刷新、前进等；  
+- PageModel类名称和成员变量名称需要同元素yaml文件中定义的一致；  
+- PageModel中的业务操作方法建议使用外部传入的数据，最大限度保证Page和Data的分离；  
+- PageElement为各种不同元素的模型对象，后期你也可以自行扩展不同的页面元素对象类；  
+- 不建议PageModel类以中文名称命名，至于元素名称和方法名称请自行斟酌。  
+
+#### 数据模型（测试数据生成）
+为了保证测试数据同业务脚本代码的分离，你可以自行定义不同的数据模型类：
+
+```
+public class MailTestData extends BaseDataModel {
+	
+	public String send_email;
+	public String send_password;
+	
+	public String receive_email;
+	public String receive_password;
+	
+	public String send_content;
+	
+	/**
+	 * 测试时，请换成你自己的邮箱账号和密码，同时注意使用的账号不要在登录的时候出现验证码
+	 */
+	@Override
+	public void initData() {
+		Props p = new Props(TestKit.getProjectRootPath() + "/config/data/email.data");
+		
+		
+		send_email = p.getStr("send_email");
+		send_password = p.getStr("send_password");
+		
+		receive_email = p.getStr("receive_email");
+		receive_password = p.getStr("receive_password");
+		
+		send_content = "易大师UI自动化测试框架";
+	}	
+}
+```
+
+- 自定义的数据模型类需要继承BaseDataModel类，同时实现其中initData方法；  
+- 在initData方法中定义数据的生成方式，在实际使用中，可自行调用initData方法来生成新的一组数据；
+- 在BaseDataModel类中提供了以下众多的数据生成方法或者工具方法：
 
 
-
-
-
-
-
-### PageModel模型类
-
-### 测试用例类
-
-#### 测试数据生成器
-
-### 常用页面操作
-
-### 测试配置文件seleniumConfig.properties
+### 常用元素、页面操作
 
 ### 自动生成PageModel类
 
 ### 测试报告处理器
 
-### 使用yaml编辑测试用例
+### 测试配置文件seleniumConfig.properties
+
+### 测试执行
+
+### 使用yaml定义测试用例
 
 ### jar包运行
 
