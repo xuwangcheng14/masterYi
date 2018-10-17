@@ -71,7 +71,7 @@ Eclipse 2018_
 
 ## 框架使用详解
 
-### 元素yaml文件
+### 元素定义
 
 在项目根目录下config/elemment目录下保存元素定义的yaml文件，一般相同或者相似模块的页面中元素定义在同一个文件中，在该目录下，你也可以新建不同的文件夹以对不同系统、模块、功能的页面进行合理分类，如图：  
 
@@ -256,6 +256,39 @@ public class MailTestData extends BaseDataModel {
 	public List<List<Object>> readFromExcel(String path)    
 ```
 
+### 测试用例
+测试用例类方便了用户组装不同页面的不同业务方法以形成完整的业务操作流程，如此也极大的保证了脚本代码的高度复用：
+
+```
+public class MailTest {
+
+	public LoginPage loginPage;
+	public MailPage mailPage;
+	public MailLogoutPage logoutPage;
+	
+	public MailTestData data;
+	
+	@UseCase(name="163邮箱测试")
+	public void mailTest() throws Exception {
+		loginPage.open();
+		loginPage.login(data.send_email, data.send_password);
+		mailPage.verifyLogin(data.send_email);
+		mailPage.sendEmail(data.receive_email, "测试易大师框架", data.send_content);		
+		mailPage.logout();
+		logoutPage.verifyLogout();
+		logoutPage.reLogin();
+		loginPage.login(data.receive_email, data.receive_password);
+		mailPage.verifyLogin(data.receive_email);
+		mailPage.reveiceEmail(data.send_email);
+		mailPage.replyEmail(data.send_content);
+		mailPage.logout();
+		logoutPage.verifyLogout();
+	}
+}
+```
+- 用例方法上需要加上 **_@UseCase(name="163邮箱测试")_** 注解，没有该注解或者注解中定义 **_enabled=false_** 的将不会被执行；
+- 
+
 ### 常用元素、页面操作
 
 - 框架中封装了一些常用的元素、页面操作，如果没有你想要用到的，你可以在IBasePage和IBaseElement中自行添加或者在PageModel类中通过 _ getDriver()_  方法获取当前的WebDriver对象再进行操作;  
@@ -434,6 +467,9 @@ public class MailTestData extends BaseDataModel {
 	void executeScript(String js);
 ```
 
+#### 其他
+
+
 ### 自动生成PageModel类
 根据定义元素的yaml文件可以自动生成PageModel类，在Page页面较多或者页面内元素较多的时候，可以节省不少体力。
 
@@ -586,11 +622,16 @@ db.atp.type=mysql
 
 ### 使用yaml定义测试用例  
 
-除了在测试用例类中使用UseCase注解定义测试用例方法之外，还可以使用yaml文件定义：
-- 
+除了在测试用例类中使用 _**UseCase**_ 注解定义测试用例方法之外，还可以使用yaml文件定义：
+- 萨达
+
 
 ### 启动脚本执行测试
 
 ### 以jar包执行测试
 
-### 扩展改进
+### 分布式运行
+
+### 定时执行
+
+### Jenkins集成
