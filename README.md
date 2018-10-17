@@ -424,18 +424,130 @@ public class MailTestData extends BaseDataModel {
 	 * @param index 窗口下标，从左到右，起始为0
 	 */
 	void switchWindow(int index);
+
+        /**
+	 * 执行js代码
+	 * @param js
+	 */
+	void executeScript(String js);
 ```
 
 ### 自动生成PageModel类
+根据定义元素的yaml文件可以自动生成PageModel类，在Page页面较多或者页面内元素较多的时候，可以节省不少体力。
+
+生成工具类位于src/test/java/common包下：
+![13](https://images.gitee.com/uploads/images/2018/1017/100844_5fcabfe0_431003.png "屏幕截图.png")
+
+调用  _generate (String yamlFileName, String packageName)_  方法即可根据指定的yaml文件在指定包下(包结构需要手动创建)生成PageModel类java文件(执行完需要手动刷新项目)。
 
 ### 测试报告处理器
+在每次完成测试之后，框架都会生成一个完整的SuiteReport测试报告数据对象，该对象中包含了很多重要的测试数据内容，具体的字段释义你可以查看 _com.dcits.yi.ui.report_ 包下的 _CaseReport、StepReport、SuiteReport_ 三个类中的注释，完整的报告数据转成json对象之后如下所示：
+```
+{
+	"failCount": 0,
+	"browserName": "chrome",
+	"successCount": 1,
+	"testTime": "2018-10-15 18:34:06",
+	"endTime": "2018-10-15 18:34:13",
+	"title": "Web自动化",
+	"totalCount": 1,
+	"env": {
+		"firefoxDriverPath": "F:\\Eclipse2017Workplace\\MasterYIUITest/src/main/resources/geckodriver.exe",
+		"remoteMode": false,
+		"hubRemoteUrl": "http://127.0.0.1:4444/wd/hub",
+		"screenshotFolder": "/screenshot",
+		"elementFolder": "F:\\Eclipse2017Workplace\\MasterYIUITest/config/element/",
+		"elementLocationRetryCount": 3,
+		"defaultSleepSeconds": 0.5,
+		"suiteFolder": "F:\\Eclipse2017Workplace\\MasterYIUITest/config/suite/",
+		"ieDriverPath": "F:\\Eclipse2017Workplace\\MasterYIUITest/src/main/resources/IEDriverServer.exe",
+		"elementLocationTimeouts": 9,
+		"reportFolder": "F:\\Eclipse2017Workplace\\MasterYIUITest/report",
+		"operaDriverPath": "F:\\Eclipse2017Workplace\\MasterYIUITest/src/main/resources/operadriver.exe",
+		"chromeDriverPath": "F:\\Eclipse2017Workplace\\MasterYIUITest/src/main/resources/chromedriver.exe"
+	},
+	"caseReports": [{
+		"finishTime": "2018-10-15 18:34:13",
+		"caseName": "百度搜索",
+		"useTime": "6343",
+		"runCount": 0,
+		"caseMethodPath": "com.dcits.test.baidu.usecase.Baidu.search",
+                "status": "success",
+		"stepReports": [{
+			"stepName": "打开Url地址",
+			"stepId": 0,
+			"testTime": "2018-10-15 18:34:06",
+			"params": "https://www.baidu.com/",
+			"actionName": "打开Url地址",
+			"status": true
+		}, {
+			"stepName": "输入 => 搜索框",
+			"stepId": 1,
+			"location": "id => kw",
+			"testTime": "2018-10-15 18:34:08",
+			"params": "xuwangcheng.com",
+			"elementName": "搜索框",
+			"actionName": "输入",
+			"status": true
+		}, {
+			"stepName": "点击 => 搜索按钮",
+			"stepId": 2,
+			"location": "id => su",
+			"testTime": "2018-10-15 18:34:09",
+			"params": "",
+			"elementName": "搜索按钮",
+			"actionName": "点击",
+			"status": true
+		}, {
+			"stepName": "点击 => 搜索结果",
+			"stepId": 3,
+			"location": "xpath => //*[@id=\"1\"]/h3/a",
+			"testTime": "2018-10-15 18:34:10",
+			"params": "",
+			"elementName": "搜索结果",
+			"actionName": "点击",
+			"status": true
+		}, {
+			"stepName": "切换到指定窗口",
+			"stepId": 4,
+			"testTime": "2018-10-15 18:34:12",
+			"params": "1",
+			"actionName": "切换到指定窗口",
+			"status": true
+		}, {
+			"stepName": "切换到指定窗口",
+			"stepId": 5,
+			"testTime": "2018-10-15 18:34:12",
+			"params": "0",
+			"actionName": "切换到指定窗口",
+			"status": true
+		}, {
+			"stepName": "刷新页面",
+			"stepId": 6,
+			"testTime": "2018-10-15 18:34:12",
+			"params": "",
+			"actionName": "刷新页面",
+			"status": true
+		}]		
+	}]
+}
 
-### 测试配置文件seleniumConfig.properties
+```
+- 框架中已经实现了两个基础的测试报告处理器 _CucumberReportManager_ (默认html报告处理器：生成一个Cucumber样式的测试报告)和 _DefaultExeclReportManager_ (默认excel报告处理器)：
+![21](https://images.gitee.com/uploads/images/2018/1017/103306_1b9ad42a_431003.png "屏幕截图.png")
+![22](https://images.gitee.com/uploads/images/2018/1017/103331_f54d1732_431003.png "屏幕截图.png")
 
-### 测试执行
+- 在测试启动脚本中src/main/test/common/CommonTest中通过 _setReportManagers(IReportManager... reportManagers)_ 方法将多个测试报告处理对象传入，框架将会在测试完成之后按照顺序执行每个处理器：
+![23](https://images.gitee.com/uploads/images/2018/1017/103613_f41efcde_431003.png "屏幕截图.png")
+
+- 
+
+### 配置文件seleniumConfig.properties
 
 ### 使用yaml定义测试用例
 
-### jar包运行
+### 启动脚本执行测试
+
+### 以jar包执行测试
 
 ### 扩展改进
