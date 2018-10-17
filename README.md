@@ -137,7 +137,7 @@ public class LoginPage extends BasePage {
 	public PageElement 登录按钮;	
 	
 	
-	public void 登录(String username, String passwd) {
+	public void login(String username, String passwd) {
 		用户名输入框.sendKeys(username, true);
 		密码输入框.sendKeys(passwd, true);
 		//等待验证码，手工输入
@@ -256,10 +256,175 @@ public class MailTestData extends BaseDataModel {
 
 ### 常用元素、页面操作
 
-框架中封装了
+- 框架中封装了一些常用的元素、页面操作，如果没有你想要用到的，你可以在IBasePage和IBaseElement中自行添加或者在PageModel类中通过 _ getDriver()_  方法获取当前的WebDriver对象再进行操作;  
+
+- PageElement中实现了iframe/frame/frameset的自动切换，在操作不同的元素对象时，不需要手动切换frame层（同样适用于多层嵌套的frame，需要在元素定义的yaml文件中定义好规则）;  
+
+- PageModel类中封装了弹出框操作、窗口切换、浏览器常用操作等方法。
+
+#### 元素操作
+```
+       /**
+	 * 获取文本内容
+	 * @return
+	 */
+	String getText();
+	/**
+	 * 获取元素属性值
+	 * @param attributeName
+	 * @return
+	 */
+	String getAttributeValue(String attributeName);
+	
+	/**
+	 * 获取元素的标签名称
+	 * @return
+	 */
+	String getTagName();
+	
+	/**
+	 * 鼠标悬停
+	 */
+	void mouseHover();
+	/**
+	 * 鼠标右击
+	 */
+	void mouseRightClick();
+	/**
+	 * 鼠标双击
+	 */
+	void mouseDoubleClick();
+	/**
+	 * 鼠标点击
+	 */
+	void mouseClick();
+	/**
+	 * 点击
+	 */
+	void click();
+	/**
+	 * 元素是否存在
+	 * @return
+	 */
+	boolean isExist();
+	/**
+	 * 拖拽一个元素
+	 * @param begin
+	 * @param end
+	 */
+	void mouseDragAndDrop(PageElement end);
+	
+	/**
+	 * 滑动
+	 * @param x x轴距离
+	 * @param y y轴距离
+	 */
+	void swipe(int x, int y);
+	
+	/**
+	   *    发送内容给输入框
+	 * @param str  字符串、按键、文件路径等
+	 */
+	void sendKeys(String str);
+	/**
+	 * 发送内容给输入框
+	 * @param str
+	 * @param clearFlag 传入true则再发送之前清除内容
+	 */
+	void sendKeys(String str, boolean clearFlag);
+	/**
+	 * 清除文本框内容
+	 */
+	void clear();
+
+	/**
+	 * 根据下拉框选项的value值来选择
+	 * @param value
+	 */
+	void selectByValue(String value);
+	/**
+	 * 根据下拉框选项的文本text来选择
+	 * @param option
+	 */
+	void selectByOption(String option);
+	/**
+	 * 获取下拉框当前选中的值
+	 * @return
+	 */
+	String getSelectedValue();
+	/**
+	 * 获取当前下拉框所有选项
+	 * @return Map<K, V> K为value V为text
+	 */
+	Map<String, String> getAllOptions();
+```
 
 #### 页面操作
-
+```
+       /**
+	 * 打开当前页面的url地址
+	 */
+	void open();
+	/**
+	 * 打开指定的url地址
+	 * @param url
+	 */
+	void open(String url);
+	/**
+	 * 获取当前窗口标题
+	 * @return
+	 */
+	String getTitle();
+	/**
+	 * 获取当前浏览器地址栏地址
+	 * @return
+	 */
+	String getCurrentUrl();
+	/**
+	 * 关闭该窗口
+	 */
+	void close();
+	/**
+	 * 刷新当前页面
+	 */
+	void refresh();
+	/**
+	 * 前进
+	 */
+	void forward();
+	/**
+	 * 后退
+	 */
+	void back();
+	/**
+	 * 跳转到指定的url地址
+	 * @param url
+	 */
+	void to(String url);
+	/**
+	 * 	X掉关闭或者取消掉对话框
+	 */
+	void dialogDismiss();
+	/**
+	 * 	点击对话框的确认按钮
+	 */
+	void dialogAccept();	
+	/**
+	 * 	获取对话框中文本并点击确认
+	 * @return
+	 */
+	String getDialogText();
+	/**
+	 * 	发送内容给prompt(文本对话框)
+	 * @param keys
+	 */
+	void sendKeyDialog(String keys);
+	/**
+	   *   切换窗口
+	 * @param index 窗口下标，从左到右，起始为0
+	 */
+	void switchWindow(int index);
+```
 
 ### 自动生成PageModel类
 
