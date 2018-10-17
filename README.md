@@ -3,8 +3,10 @@
 
  **_当前版本：0.0.1beta_** 
 
+码云地址：https://gitee.com/xuwangcheng/MasterYI-UI-Test-Framework
+
 ## 项目介绍
- >  **目前文档不够齐全，作者也是刚刚使用，希望对此框架后续开发有兴趣的朋友大牛们进QQ群 468324085 一起交流学习，加群验证： 易大师。**   
+ >  **自动化测试新手，第一次尝试自己写UI自动化框架，可有BUG较多或者某些地方考虑不周全，希望对此框架后续开发有兴趣的朋友大牛们进QQ群 468324085 一起交流学习，加群验证： 易大师。**   
 
 
 基于PageMode模型进行测试代码编程的UI自动化测试框架    
@@ -540,11 +542,52 @@ public class MailTestData extends BaseDataModel {
 - 在测试启动脚本中src/main/test/common/CommonTest中通过 _setReportManagers(IReportManager... reportManagers)_ 方法将多个测试报告处理对象传入，框架将会在测试完成之后按照顺序执行每个处理器：
 ![23](https://images.gitee.com/uploads/images/2018/1017/103613_f41efcde_431003.png "屏幕截图.png")
 
-- 
+- 创建自定义的报告处理器，你可以在测试完成之后，执行发送邮件、入库、创建自定义样式报告等操作，自定义的报告处理器类需要继承 _com.dcits.yi.ui.report.manage_ 包下的 _IReportManager_ 接口，实现 _void create(SuiteReport reportData)_ 方法：
+![23](https://images.gitee.com/uploads/images/2018/1017/105008_a8b3b53d_431003.png "屏幕截图.png")
+
+### 浏览器驱动文件
+ChromeDriver等浏览器驱动文件均防止在src/main/resource目录下，默认的版本号请查看该目录下的  _driver版本说明.txt_ 文件说明。
+框架在进行测试时，会优先使用该目录下的驱动文件。
 
 ### 配置文件seleniumConfig.properties
+ **seleniumConfig.properties** 配置文件位于项目根目录下，一般来说在IDE中调试时不需要做任何改动：
+```
+# 远程分布式执行
+remote_mode=false
+# grid分布式执行时，设置master节点的地址，例如：http://127.0.0.1:4444/wd/hub
+hub.remote.url=
+# 每步操作默认的间隔时间,秒，可小数
+sleep_seconds=0.5
+# 定位元素时，如果失败，可重试的最大次数
+element_location_retry_count=3
+# 定位元素时，最大超时时间，秒
+element_location_timeouts=9
 
-### 使用yaml定义测试用例
+###########################################################################################
+# 数据源设置，目前支持mysql/oracle/db2/postgresql
+# 在此设置名称代表启用哪几个数据库配置,只有在此配置了名称运行时才会创建该数据库的连接信息
+dbname=
+#####################################
+#	dbname=wcrm1
+#	db.wcrm1.jdbcUrl=jdbc:mysql://localhost/rmp?characterEncoding=UTF-8&zeroDateTimeBehavior=convertToNull&transformedBitIsBoolean=true			    
+#	db.wcrm1.user=root				    
+#	db.wcrm1.password=123456						    				
+#	db.wcrm1.type=mysql					
+#	可省略driverClass 	
+#	db.wcrm1.driverClass= 			
+#####################################
+db.atp.jdbcUrl=jdbc:mysql://localhost/atp?characterEncoding=UTF-8&zeroDateTimeBehavior=convertToNull&transformedBitIsBoolean=true		    
+db.atp.user=root	    
+db.atp.password=123456						    				
+db.atp.type=mysql
+```
+- 目前远程分布式执行功能尚未完成；
+- 除了mysql,使用其他类型数据源时，需要你在pom.xml中自行添加对应的数据库驱动依赖；
+
+### 使用yaml定义测试用例  
+
+除了在测试用例类中使用UseCase注解定义测试用例方法之外，还可以使用yaml文件定义：
+- 
 
 ### 启动脚本执行测试
 
