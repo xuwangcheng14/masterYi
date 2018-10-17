@@ -6,11 +6,11 @@
 码云地址：https://gitee.com/xuwangcheng/MasterYI-UI-Test-Framework
 
 ## 项目介绍
- >  **自动化测试新手，第一次尝试自己写UI自动化框架，可有BUG较多或者某些地方考虑不周全，希望对此框架后续开发有兴趣的朋友大牛们进QQ群 468324085 一起交流学习，加群验证： 易大师。**   
+ >  **第一次尝试自己写完整的UI自动化框架，可能某些地方考虑不周全，希望对此框架后续开发有兴趣的朋友大牛们进QQ群 468324085 一起交流学习，加群验证： 易大师。**   
 
 
-基于PageMode模型进行测试代码编程的UI自动化测试框架    
-底层由selenium-java框架支持，使用yaml文件定义元素定位和用例执行规则  
+基于PageMode模型进行测试代码编程的UI自动化测试框架，元素定位、业务逻辑、测试数据分离。    
+底层由selenium-java框架支持，使用yaml文件定义元素定位和用例执行规则。 
 
 在开发过程中参考了以下优秀的自动化测试框架的某些思路或思想，在此感谢：  
 - [Sweetest-小而美的自动化测试框架](https://github.com/tonglei100/sweetest)
@@ -21,10 +21,11 @@
 http://hutool.mydoc.io/
 
 
-## 开发环境
-
- _jdk >= 1.7  
-Eclipse 2018_ 
+## 环境要求
+系统: windows  
+jdk >= 1.7    
+浏览器： chrome >=68  
+ide: Eclipse 
 
 你需要了解以下知识：
 -  [java编程基础](https://www.java.com/zh_CN/)   
@@ -197,7 +198,7 @@ public class MailTestData extends BaseDataModel {
 ```
        /**
 	 * 执行sql并获取,返回多条信息只会取第一条
-	 * @param dbName seleniumConfig.properties配置文件中定义的数据库名称
+	 * @param dbName seleniumConfig.properties配置文件中定义的数据源名称
 	 * @param sql
 	 * @return
 	 * @throws Exception 
@@ -257,7 +258,9 @@ public class MailTestData extends BaseDataModel {
 ```
 
 ### 测试用例
-测试用例类方便了用户组装不同页面的不同业务方法以形成完整的业务操作流程，如此也极大的保证了脚本代码的高度复用：
+
+- 测试用例类方便了用户组装不同页面的不同业务方法以形成完整的业务操作流程，如此也极大的保证了脚本代码的高度复用；
+- 用例方法上需要加上 **_@UseCase(name="163邮箱测试")_** 注解，没有该注解或者注解中定义 **_enabled=false_** 的将不会被执行；
 
 ```
 public class MailTest {
@@ -286,8 +289,7 @@ public class MailTest {
 	}
 }
 ```
-- 用例方法上需要加上 **_@UseCase(name="163邮箱测试")_** 注解，没有该注解或者注解中定义 **_enabled=false_** 的将不会被执行；
-- 
+
 
 ### 常用元素、页面操作
 
@@ -469,6 +471,14 @@ public class MailTest {
 
 #### 其他
 
+-  **PageModel**   _Assert(boolean assertContent, String failMsgFormat, Object ... arguments)_：   
+框架内的断言方法，请务必使用使用该方法，否则在测试报告和日志将不会记录断言内容、
+-  **PageModel**   _Mark(String format, Object ... arguments)_ ：  
+框架内的备注方法，通过该方法将会自动追加信息到上一个操作步骤报告的备注中。
+-  **PageModel**   _screenshot()_  ：  
+框架内截图功能，自动截图当前浏览器，并将该截图绑定到上一个操作步骤中。
+
+
 
 ### 自动生成PageModel类
 根据定义元素的yaml文件可以自动生成PageModel类，在Page页面较多或者页面内元素较多的时候，可以节省不少体力。
@@ -620,18 +630,119 @@ db.atp.type=mysql
 - 目前远程分布式执行功能尚未完成；
 - 除了mysql,使用其他类型数据源时，需要你在pom.xml中自行添加对应的数据库驱动依赖；
 
-### 使用yaml定义测试用例  
+### 使用yaml定义测试套件 
 
-除了在测试用例类中使用 _**UseCase**_ 注解定义测试用例方法之外，还可以使用yaml文件定义：
-- 萨达
+除了在测试用例类中使用 _**UseCase**_ 注解定义测试用例方法之外，还可以使用在yaml文件中定义一个完整的测试套件：
+
+```
+# 测试标题
+title: 易大师框架测试
+# 执行浏览器类型chrome/ie/firefox
+browserType: chrome
+# 该用例执行失败了是否中断整个测试流程？默认为false,可单独给每个用例配置
+failInterrupt: false
+# tag为每个用例的标签，在分布式运行时，标签相同的用例将会被分配到同一个执行机器上
+tag: default
+
+# 指定测试报告处理器，测试结束之后将会按顺序执行
+reportManager: 
+  - com.dcits.yi.ui.report.manage.CucumberReportManager
+  - com.dcits.yi.ui.report.manage.DefaultExeclReportManager
+
+# 测试用例组
+cases:
+  - name: 163邮箱测试 
+    method: com.dcits.test.mail.usecase.MailTest.mailTest
+    # 是否执行该用例或者组合用例，为flase时该用例不会被执行
+    enabled: true   
+    # tag: 2
+    failInterrupt: true
+  
+  - name: 百度搜索
+    method: com.dcits.test.baidu.usecase.Baidu.search
+    enabled: true
+    failInterrupt: true
+```
+
+- yaml文件请存放在项目根目录下的 **_config/suite_** 文件夹下；
+- 在测试用例组中，可以将多个用例方法组装成一个用例，测试过程中将会按顺序执行method组内的所有用例方法：
+```
+- name: 163邮箱测试
+  method: 
+    - com.dcits.test.baidu.usecase.Baidu.search
+    - com.dcits.test.mail.usecase.MailTest.mailTest
+  failInterrupt: true
+```
+- 在该文件中定义的用例执行规则与测试用例方法上 **_UseCase_** 注解内定义的规则互不影响；
+- 你可以创建多个测试套件定义yaml文件，灵活的组装各用例方法到不同的测试套件中。
+
+### 启动测试
+在src/test/java/common下的CommonTest.java为启动测试脚本：
+```
+public class CommonTest {
+	
+	public static void main(String[] args) throws Exception {
+		//WebTest test = new WebTest("testsuite");
+		WebTest test = new WebTest(Baidu.class, MailTest.class);
+		
+		test.setReportManagers(new CucumberReportManager(), new DefaultExeclReportManager());		
+		test.start();
+		//System.out.println(JSONUtil.parse(GlobalTestConfig.report).toStringPretty());;
+	}
+}
+```
+- 你可以使用 **new WebTest(Baidu.class, MailTest.class)** 或者 **new WebTest("testsuite")** 初始化测试对象，通过 **_start()_** 方法开启测试；
+```
+        /**
+	 * 实例化测试对象
+	 * @param caseClasses 指定多个需要执行的Case类，根据类中用例方法上的UseCase注解规则来执行
+	 */
+	public WebTest(Class ... caseClasses) 
+
+        /**
+	 * 实例化测试对象
+	 * @param suiteYamlFileName 设定测试套件的yaml文件名称，不带.yaml后缀，在文件中定义执行规则
+	 */
+	public WebTest(String suiteYamlFileName) 
+```
+- 如果通过指定UseCase类来执行测试，你可以通过实例化的测试对象的setter方法来更改测试浏览器类型、测试标题、默认标签等配置。
+
+### 导出jar包测试
+
+1. 在项目上右键选择Export，选择导出类型为 _**Runnable JAR file**_ :
+
+![41](https://images.gitee.com/uploads/images/2018/1017/145026_3145c28e_431003.png "屏幕截图.png")
+
+2. 点击Next，如下图选择：
+
+![42](https://images.gitee.com/uploads/images/2018/1017/145212_cd39a3e7_431003.png "屏幕截图.png")
+
+3. 点击Finish导出。
+4. 解压项目根目录下的auteTest.rar压缩包，将刚导出的autoTest.jar文件和autoTest_lib文件夹全部复制或剪切到刚才解压出的autoTest文件夹下；
+
+![43](https://images.gitee.com/uploads/images/2018/1017/145835_38d4c9f9_431003.png "屏幕截图.png")
+
+5. 将框架项目根目录下的config文件夹和seleniumConfig.properties配置文件拷贝到autoTest文件夹下；
+6. 在autoTest文件夹下通过右键选择 " **在此处打开命令窗口** " 进入cmd窗口（或者Win + R进入到cmd再切换到该目录），执行如下命令：
+> java -jar autoTest.jar [测试套件yaml文件名称]
 
 
-### 启动脚本执行测试
-
-### 以jar包执行测试
-
-### 分布式运行
+### 分布式执行
+后续更新
 
 ### 定时执行
+你可以使用window上的定时任务实现定时执行jar包运行测试。  
+ **后续版本将会在框架中增加定时自动化测试功能。** 
 
 ### Jenkins集成
+文档尚未更新，不过实现方法百度上有比较多的介绍。
+
+### 最后的说明
+开发能力有限，有bug在所难免，目前只测试了chrome浏览器，也没有测试更复杂的页面或者业务流程，请但大牛们嘴下留情。  
+如果你对本框架有任何建议和吐槽，欢迎加入QQ群  **468324085**  与我交流！
+
+### 后续更新日志
+1. 分布式运行  
+2. 在测试套件的yaml文件中可以向用例方法中传入参数  
+3. 在元素定位规则中可以携带变量  
+4. 定时执行 
