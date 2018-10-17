@@ -1,7 +1,6 @@
 package common;
 
 import com.dcits.test.baidu.usecase.Baidu;
-import com.dcits.test.mail.usecase.MailTest;
 import com.dcits.yi.WebTest;
 import com.dcits.yi.ui.report.manage.CucumberReportManager;
 import com.dcits.yi.ui.report.manage.DefaultExeclReportManager;
