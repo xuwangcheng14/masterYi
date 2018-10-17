@@ -70,4 +70,9 @@ public interface IBasePage {
 	 * @param index 窗口下标，从左到右，起始为0
 	 */
 	void switchWindow(int index);
+	/**
+	 * 执行js代码
+	 * @param js
+	 */
+	void executeScript(String js);
 }

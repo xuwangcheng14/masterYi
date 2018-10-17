@@ -56,11 +56,19 @@ public class WebTest {
 	
 	private boolean quitFlag = true;
 	
+	/**
+	 * 实例化测试对象
+	 * @param suiteYamlFileName 设定测试套件的yaml文件名称，不带.yaml后缀，在文件中定义执行规则
+	 */
 	public WebTest(String suiteYamlFileName) {
 		super();
 		this.suiteYamlFileName = suiteYamlFileName;
 	}
 	
+	/**
+	  * 实例化测试对象
+	 * @param caseClasses 指定多个需要执行的Case类，根据类中用例方法上的UseCase注解规则来执行
+	 */
 	public WebTest(Class ... caseClasses) {
 		super();
 		this.caseClasses = caseClasses;
@@ -192,7 +200,9 @@ public class WebTest {
 			if (reportManagerClass != null && reportManagerClass.size() > 0) {
 				for (String s:reportManagerClass) {
 					try {
-						reportManagers.add(ReflectUtil.newInstance(s));
+						if (IReportManager.class.isAssignableFrom(Class.forName(s)) ) {
+							reportManagers.add(ReflectUtil.newInstance(s));
+						}						
 					} catch (Exception e) {
 						// TODO: handle exception
 						logger.info("测试报告处理器[{}]实例化失败,请检查！", s);

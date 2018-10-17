@@ -9,6 +9,7 @@ import java.util.Map;
 
 import org.apache.commons.io.FileUtils;
 import org.openqa.selenium.Alert;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.OutputType;
 import org.openqa.selenium.TakesScreenshot;
 
@@ -126,21 +127,18 @@ public class BasePage extends BaseObject implements IBasePage {
 	
 	@Override
 	public void refresh() {
-		// TODO Auto-generated method stub
 		getDriver().navigate().refresh();
 	}
 
 
 	@Override
 	public void forward() {
-		// TODO Auto-generated method stub
 		getDriver().navigate().forward();
 	}
 
 
 	@Override
 	public void back() {
-		// TODO Auto-generated method stub
 		getDriver().navigate().back();
 	}
 
@@ -201,5 +199,10 @@ public class BasePage extends BaseObject implements IBasePage {
 	public void switchWindow(int index) {
 		List<String> handles = new ArrayList<String>(getDriver().getWindowHandles());
 		getDriver().switchTo().window(handles.get(index));		
+	}
+
+	@Override
+	public void executeScript(String js) {
+		((JavascriptExecutor) getDriver()).executeScript(js);		
 	}
 }

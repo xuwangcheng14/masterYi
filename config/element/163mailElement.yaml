@@ -13,7 +13,7 @@ MailPage:
   writeframe: xpath //div[@class="APP-editor-edtr"]/iframe
 
   用户标签: id spnUid
-  写信按钮: xpath //div[@id="dvNavTop"]/ul/li[2]/span[2]     
+  写信按钮: xpath //div[@id="dvNavTop"]/ul/li[2]/span[2]  
   收信人: className bz0
   收信人地址: className nui-editableAddr-ipt
   发信按钮: xpath //span[text()="发送"][1]

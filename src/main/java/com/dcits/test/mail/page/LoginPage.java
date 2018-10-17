@@ -15,7 +15,7 @@ public class LoginPage extends BasePage {
 	public PageElement 登录按钮;	
 	
 	
-	public void login(String username, String passwd) {
+	public void 登录(String username, String passwd) {
 		用户名输入框.sendKeys(username, true);
 		密码输入框.sendKeys(passwd, true);
 		//等待验证码，手工输入

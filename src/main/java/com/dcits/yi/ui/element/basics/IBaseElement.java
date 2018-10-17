@@ -101,17 +101,17 @@ public interface IBaseElement {
 	 */
 	Select getSelect();
 	/**
-	 * 根据下拉选项的value值来选择
+	 * 根据下拉框选项的value值来选择
 	 * @param value
 	 */
 	void selectByValue(String value);
 	/**
-	 * 根据下拉选项的文本text来选择
+	 * 根据下拉框选项的文本text来选择
 	 * @param option
 	 */
 	void selectByOption(String option);
 	/**
-	 * 获取当前选中的值
+	 * 获取下拉框当前选中的值
 	 * @return
 	 */
 	String getSelectedValue();
