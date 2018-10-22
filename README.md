@@ -3,7 +3,7 @@
 
  **_当前版本：0.0.2beta_** 
 
-码云地址：https://gitee.com/xuwangcheng/MasterYI-UI-Test-Framework
+码云地址：https://gitee.com/xuwangcheng/MasterYI-UI-Test-Framework  
 更新日志: [易大师UI自动化测试框架-Wiki](https://gitee.com/xuwangcheng/MasterYI-UI-Test-Framework/wikis/%E6%9B%B4%E6%96%B0%E6%97%A5%E5%BF%97?sort_id=879222)
 
 
