@@ -11,19 +11,21 @@ tag: default
 reportManager: 
   - com.dcits.yi.ui.report.manage.CucumberReportManager
   - com.dcits.yi.ui.report.manage.DefaultExeclReportManager
+  - com.dcits.yi.ui.report.manage.ZTestReportManager
 
 # 测试用例组
 cases:
   - name: 163邮箱测试 
-    method: com.dcits.test.mail.usecase.MailTest.mailTest
+    method: com.dcits.test.baidu.usecase.Baidu.search
     # 是否执行该用例或者组合用例，为flase时该用例不会被执行
     enabled: true   
-    # tag: 2
+    tag: 2
     failInterrupt: true
   
   - name: 百度搜索
     method: com.dcits.test.baidu.usecase.Baidu.search
     enabled: true
+    tag: 3
     failInterrupt: true
 
   

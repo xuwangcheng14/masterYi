@@ -9,7 +9,7 @@ public class Baidu {
 	public BaiduSearchPage page;
 	public SearchResultPage result;
 	
-	@UseCase(name="百度搜索")
+	@UseCase(name="百度搜索", tag="baidu")
 	public void search() throws Exception {
 		page.open();
 		page.search("xuwangcheng.com");

@@ -2,10 +2,13 @@ package com.dcits.yi;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
+import java.net.MalformedURLException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import com.dcits.yi.constant.TestConst;
 import com.dcits.yi.tool.TestKit;
@@ -26,6 +29,7 @@ import cn.hutool.core.convert.ConverterRegistry;
 import cn.hutool.core.date.DateUtil;
 import cn.hutool.core.date.TimeInterval;
 import cn.hutool.core.map.MapUtil;
+import cn.hutool.core.thread.ThreadUtil;
 import cn.hutool.core.util.ArrayUtil;
 import cn.hutool.core.util.ReflectUtil;
 import cn.hutool.core.util.StrUtil;
@@ -51,7 +55,14 @@ public class WebTest {
 	private String suiteYamlFileName;	
 	private Class[] caseClasses;
 	
+	/**
+	 * 执行用例
+	 */
 	private List<ExecuteCaseModel> cases = new ArrayList<ExecuteCaseModel>();
+	/**
+	 * 根据tag对执行用例进行分类
+	 */
+	private Map<String, List<ExecuteCaseModel>> tagCases = new HashMap<String, List<ExecuteCaseModel>>();
 	
 	private List<IReportManager> reportManagers = new ArrayList<IReportManager>();
 	
@@ -79,7 +90,7 @@ public class WebTest {
 	 * 开始执行,有两种方法<br>
 	 * 1、设置testsuite的yaml文件，在文件中定义执行规则<br>
 	 * 2、指定执行的Case类，自动化根据类中方法上的注解规则来执行<br>
-	 * 两种都配置了优先使用配置文件
+	 * 	两种都配置了优先使用yaml配置文件进行测试
 	 * @throws Exception 
 	 */
 	public void start() throws Exception {
@@ -94,8 +105,7 @@ public class WebTest {
 			clean();
 			System.exit(0);
 		}
-		
-		GlobalTestConfig.getTestRunningObject().setDriver(SeleniumDriver.initWebDriver(broswerType));
+			
 		initPageObject();
 		
 		logger.info("开始执行测试，测试用例数为{}个", cases.size());
@@ -109,16 +119,38 @@ public class WebTest {
 		GlobalTestConfig.report.setTotalCount(cases.size());
 		
 		//执行用例	
-		for (ExecuteCaseModel ecm:cases) {
-			ecm.execute();			
-			if (!ecm.isSuccessFlag() && ecm.isFailInterrupt()) {
-				break;
-			}
+		if (GlobalTestConfig.ENV_INFO.isRemoteMode()) {
+			//分布式执行
+			AtomicInteger finishCount = new AtomicInteger(0);
+			for (String tagKey:tagCases.keySet()) {
+				ThreadUtil.execute(new Runnable() {					
+					@Override
+					public void run() {
+						autoTest(tagCases.get(tagKey), finishCount);	
+					}
+				});
+			}			
+			while (finishCount.get() < cases.size()) {
+				try {
+					Thread.sleep(3000);
+				} catch (InterruptedException e) {}
+			}			
+		} else {
+			//本地执行
+			autoTest(cases, null);			
 		}
 		
 		GlobalTestConfig.report.setEndTime(DateUtil.now());
-		GlobalTestConfig.report.setUseTime(interval.intervalMs());
-		clean();
+		GlobalTestConfig.report.setUseTime(interval.intervalMs());	
+		
+		//断开数据库连接
+		if (GlobalTestConfig.dbConnections.size() > 0) {
+			logger.info("断开测试数据库连接");
+			for (TestDB db:GlobalTestConfig.dbConnections.values()) {
+				db.closeConnection();
+			}
+		}
+		
 		manageReport();
 		logger.info("测试完成");
 	}
@@ -143,18 +175,40 @@ public class WebTest {
 	 * 测试结束清理环境
 	 */
 	public void clean() {		
-		if (GlobalTestConfig.getTestRunningObject().getDriver() != null && quitFlag) {
+		if (GlobalTestConfig.getTestRunningObject().getDriver() != null) {
 			//关闭webdriver
 			logger.info("关闭webdriver");
 			GlobalTestConfig.getTestRunningObject().getDriver().quit();		
+		}		
+	}
+	
+	/**
+	 * 	自动化测试
+	 * @param execuCaseModels
+	 * @param finishCount
+	 * @throws MalformedURLException
+	 */
+	private void autoTest(List<ExecuteCaseModel> execuCaseModels, AtomicInteger finishCount) {
+		try {
+			GlobalTestConfig.getTestRunningObject().setDriver(SeleniumDriver.initWebDriver(broswerType));
+		} catch (Exception e) {
+			logger.error(e, "WebDriver初始化出错！");
+			if (finishCount != null) finishCount.addAndGet(execuCaseModels.size());
+			return;
 		}
-		//断开数据库连接
-		if (GlobalTestConfig.dbConnections.size() > 0) {
-			logger.info("断开测试数据库连接");
-			for (TestDB db:GlobalTestConfig.dbConnections.values()) {
-				db.closeConnection();
+		
+		for (int i = 0;i < execuCaseModels.size();i++) {
+			ExecuteCaseModel ecm = execuCaseModels.get(i);
+			ecm.execute();
+			if (finishCount != null) finishCount.incrementAndGet();
+			if (!ecm.isSuccessFlag() && ecm.isFailInterrupt()) {
+				if (finishCount != null) finishCount.addAndGet(execuCaseModels.size() - i - 1);
+				break;
 			}
+			i++;
 		}
+		
+		clean();
 	}
 	
 	/**
@@ -238,7 +292,11 @@ public class WebTest {
 				caseModel.setName(MapUtil.getStr(m, "name"));
 				caseModel.setFailInterrupt(Convert.toBool(m.get("failInterrupt"), failInterrupt));
 				caseModel.setRetryCount(Convert.toInt(m.get("retryCount"), retryCount));
-				caseModel.setTag(Convert.toStr(m.get("tag"), tag));
+				caseModel.setTag(Convert.toStr(m.get("tag"), tag));	
+				
+				if (!tagCases.containsKey(caseModel.getTag())) tagCases.put(caseModel.getTag(), new ArrayList<ExecuteCaseModel>());
+				tagCases.get(caseModel.getTag()).add(caseModel);
+				
 				this.cases.add(caseModel);
 			}
 			logger.info("测试用例配置文件{}.yaml解析完成", this.suiteYamlFileName);
@@ -278,6 +336,9 @@ public class WebTest {
 				
 				caseModel.getTargets().add(o);
 				caseModel.getMethods().add(m);
+				
+				if (!tagCases.containsKey(caseModel.getTag())) tagCases.put(caseModel.getTag(), new ArrayList<ExecuteCaseModel>());
+				tagCases.get(caseModel.getTag()).add(caseModel);
 				
 				this.cases.add(caseModel);
 			}

@@ -1,0 +1,14 @@
+0.1.0beta
+2018.10.22
+增加分布式运行的功能
+
+0.0.2beta 
+2018.10.22
+- 默认的静态Html报告的一些样式微调
+- SuiteReport新增字段useTime,整个测试套件的执行耗时  
+- 新增一款默认的Html报告，参考：[ztest](https://github.com/zhangfei19841004/ztest)
+
+
+0.0.1beta 
+2018.10.18
+- 完成框架的基础功能。
