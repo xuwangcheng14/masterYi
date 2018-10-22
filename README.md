@@ -1,9 +1,11 @@
 # MasterYI UI Test Framework
 易大师UI自动化测试框架
 
- **_当前版本：0.0.1beta_** 
+ **_当前版本：0.0.2beta_** 
 
 码云地址：https://gitee.com/xuwangcheng/MasterYI-UI-Test-Framework
+更新日志: [易大师UI自动化测试框架-Wiki](https://gitee.com/xuwangcheng/MasterYI-UI-Test-Framework/wikis/%E6%9B%B4%E6%96%B0%E6%97%A5%E5%BF%97?sort_id=879222)
+
 
 ## 项目介绍
  >  **第一次尝试自己写完整的UI自动化框架，可能某些地方考虑不周全，希望对此框架后续开发有兴趣的朋友大牛们进QQ群 468324085 一起交流学习，加群验证： 易大师。**   
@@ -584,6 +586,9 @@ public class MailTest {
 - 框架中已经实现了两个基础的测试报告处理器 _CucumberReportManager_ (默认html报告处理器：生成一个Cucumber样式的测试报告)和 _DefaultExeclReportManager_ (默认excel报告处理器)：
 ![21](https://images.gitee.com/uploads/images/2018/1017/103306_1b9ad42a_431003.png "屏幕截图.png")
 ![22](https://images.gitee.com/uploads/images/2018/1017/103331_f54d1732_431003.png "屏幕截图.png")
+
+ **0.0.2beta新增一款Html报告：**   
+![1](https://images.gitee.com/uploads/images/2018/1022/101939_b5be5809_431003.png "在这里输入图片标题")
 
 - 在测试启动脚本中src/main/test/common/CommonTest中通过 _setReportManagers(IReportManager... reportManagers)_ 方法将多个测试报告处理对象传入，框架将会在测试完成之后按照顺序执行每个处理器：
 ![23](https://images.gitee.com/uploads/images/2018/1017/103613_f41efcde_431003.png "屏幕截图.png")
