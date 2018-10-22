@@ -43,6 +43,7 @@ public class CaseReport {
 	 * 包含的测试步骤报告
 	 */
 	private List<StepReport> stepReports = new ArrayList<StepReport>();
+	
 		
 	public void setCaseMethodPath(String caseMethodPath) {
 		this.caseMethodPath = caseMethodPath;

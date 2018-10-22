@@ -51,6 +51,19 @@ public class SuiteReport {
 	 * 包含的用例测试报告
 	 */
 	private List<CaseReport> caseReports = new ArrayList<CaseReport>();
+	
+	/**
+	 * 执行消耗时间,ms
+	 */
+	private long useTime;
+	
+	public void setUseTime(long useTime) {
+		this.useTime = useTime;
+	}
+	
+	public long getUseTime() {
+		return useTime;
+	}
 
 	public String getTitle() {
 		return title;

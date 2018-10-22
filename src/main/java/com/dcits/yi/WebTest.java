@@ -24,6 +24,7 @@ import cn.hutool.aop.ProxyUtil;
 import cn.hutool.core.convert.Convert;
 import cn.hutool.core.convert.ConverterRegistry;
 import cn.hutool.core.date.DateUtil;
+import cn.hutool.core.date.TimeInterval;
 import cn.hutool.core.map.MapUtil;
 import cn.hutool.core.util.ArrayUtil;
 import cn.hutool.core.util.ReflectUtil;
@@ -99,6 +100,8 @@ public class WebTest {
 		
 		logger.info("开始执行测试，测试用例数为{}个", cases.size());
 		
+		TimeInterval interval = new TimeInterval();
+		
 		GlobalTestConfig.report.setTitle(testTitle);
 		GlobalTestConfig.report.setEnv(GlobalTestConfig.ENV_INFO);
 		GlobalTestConfig.report.setTestTime(DateUtil.now());
@@ -114,6 +117,7 @@ public class WebTest {
 		}
 		
 		GlobalTestConfig.report.setEndTime(DateUtil.now());
+		GlobalTestConfig.report.setUseTime(interval.intervalMs());
 		clean();
 		manageReport();
 		logger.info("测试完成");

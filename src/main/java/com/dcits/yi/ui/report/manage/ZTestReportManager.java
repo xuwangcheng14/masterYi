@@ -31,8 +31,7 @@ public class ZTestReportManager implements IReportManager {
 		report.put("testAll", reportData.getTotalCount());
 		report.put("testFail", reportData.getFailCount());
 		report.put("beginTime", reportData.getTestTime());
-		report.put("totalTime", String.valueOf(DateUtil.between(DateUtil.parseDateTime(reportData.getEndTime())
-				, DateUtil.parseDateTime(reportData.getTestTime()), DateUnit.MS)) + "ms");
+		report.put("totalTime", reportData.getUseTime() + "ms");
 		report.put("testSkip", 0);
 		
 		JSONArray results = new JSONArray();
