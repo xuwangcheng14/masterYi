@@ -588,7 +588,7 @@ public class MailTest {
 ![21](https://images.gitee.com/uploads/images/2018/1017/103306_1b9ad42a_431003.png "屏幕截图.png")
 ![22](https://images.gitee.com/uploads/images/2018/1017/103331_f54d1732_431003.png "屏幕截图.png")
 
-- 0.0.2beta版本 新增一款Html报告， **_该报告会向cdn.bootcss.com请求静态资源，在无外网或者网络环境差的情况下可能无法打开，请注意!! _**    
+- 0.0.2beta版本 新增一款Html报告，  **_该报告会向cdn.bootcss.com请求静态资源，在无外网或者网络环境差的情况下可能无法打开，请注意!!_**      
 ![1](https://images.gitee.com/uploads/images/2018/1022/101939_b5be5809_431003.png "在这里输入图片标题")
 
 - 在测试启动脚本中src/main/test/common/CommonTest中通过 _setReportManagers(IReportManager... reportManagers)_ 方法将多个测试报告处理对象传入，框架将会在测试完成之后按照顺序执行每个处理器：
