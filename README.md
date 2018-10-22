@@ -1,7 +1,7 @@
 # MasterYI UI Test Framework
 易大师UI自动化测试框架
 
- **_当前版本：0.0.2beta_** 
+ **_当前版本：0.1.0beta_** 
 
 码云地址：https://gitee.com/xuwangcheng/MasterYI-UI-Test-Framework  
 更新日志: [易大师UI自动化测试框架-Wiki](https://gitee.com/xuwangcheng/MasterYI-UI-Test-Framework/wikis/%E6%9B%B4%E6%96%B0%E6%97%A5%E5%BF%97?sort_id=879222)
@@ -747,7 +747,34 @@ public class CommonTest {
 
 
 ### 分布式执行
-后续更新
+框架使用selenium-grid实现分布式运行，在使用的过程中如有问题，请加入QQ群咨询：  
+1. 下载selenium-server-standalone-2.52.0.jar到本地，百度云：https://pan.baidu.com/s/1oiFvfakJKa_fyw5ikqu5NA
+2. 打开命令行cd到jar包目录，运行下面的命令来启动Grid-hub(可以看做是master):
+> java -jar selenium-server-standalone-2.52.0.jar -role hub -maxSession 40  
+
+-maxSession 表示最大能够开启的session个数，当成最大可同时运行的并发数即可。  
+3. 将selenium-server-standalone-2.52.0.jar拷贝到所有的远程执行机，并在每台机器都执行下面的命令：
+> java -jar selenium-server-standalone-2.52.0.jar -role node -port 6666 -maxSession 20 -hub http://127.0.0.1:4444/grid/register -Dwebdriver.chrome.driver="C:\Users\Administrator\AppData\Local\Google\Chrome\Application\chromedriver.exe"  -browser "browserName=chrome,maxInstances=5"
+
+ **说明：** 
+
+> -hub http://127.0.0.1:4444/grid/register
+
+ _请将127.0.0.1修改为你本机(master机器)的内网地址（与远程执行机所在网络的环境）_  
+ 
+> -browser "browserName=chrome,maxInstances=5" 
+
+ _设置浏览器 browserName=chrome表明该远程机可以开启的浏览器类型为chrome，maxInstances=5标识最大可启动的浏览器实例_ 
+
+> -Dwebdriver.chrome.driver="C:\Users\Administrator\AppData\Local\Google\Chrome\Application\chromedriver.exe"  
+
+ _修改为远程执行机上的chromeDriver驱动绝对路径，如果是firefox则不需要设置，ie则设置IEDriver_   
+
+4. 将seleniumConfig.properties中的 **remote_mode** 修改为true， **hub.remote.url** 设置为 **http://hub节点ip:4444/wd/hub** ；
+5. 按照说明运行测试， **注意只有测试用例的tag标签不同才能分配到不同的测试机器上运行。** 
+6. 状态查看 http://_hub节点ip_:4444/grid/console；
+7. 其他可参考 https://blog.csdn.net/five3/article/details/9415067
+
 
 ### 定时执行
 你可以使用window上的定时任务实现定时执行jar包运行测试。  
