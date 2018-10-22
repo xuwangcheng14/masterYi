@@ -402,22 +402,18 @@ return(!i||i!==r&&!b.contains(r,i))&&(e.type=o.origType,n=o.handler.apply(this,a
 			html+='</div></li>';
 		}
 			
-		var message = "";
 		if (report.location != "" && report.location != null) {
-			message += "<strong>元素&nbsp;&nbsp;&nbsp;</strong> " + report.location + "<br>";
+			html += '<li class="step message"><strong>元素&nbsp;&nbsp;&nbsp;</strong>' + report.location + '</li>';
 		}
 		if (report.params != "" && report.params != null) {
-			message += "<strong>参数&nbsp;&nbsp;&nbsp;</strong> " + report.params + "<br>";
+			html += '<li class="step message"><strong>参数&nbsp;&nbsp;&nbsp;</strong>' + report.params + '</li>';
 		}
 		if (report.result != "" && report.result != null) {
-			message += "<strong>结果&nbsp;&nbsp;&nbsp;</strong>" + report.result + "<br>";
+			html += '<li class="step message"><strong>结果&nbsp;&nbsp;&nbsp;</strong>' + report.result + '</li>';
 		}
 		if(report.mark !="" && report.mark != null){
-			message += "<br>" + report.mark;
-		}	
-		if (message != "") {
-			html+='<li class="step message">' + message + '</li>';
-		}		
+			html += '<li class="step message">' + report.mark + '</li>';
+		}			
 		return html;
 	}
 	
