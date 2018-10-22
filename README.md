@@ -752,7 +752,8 @@ public class CommonTest {
 2. 打开命令行cd到jar包目录，运行下面的命令来启动Grid-hub(可以看做是master):
 > java -jar selenium-server-standalone-2.52.0.jar -role hub -maxSession 40  
 
--maxSession 表示最大能够开启的session个数，当成最大可同时运行的并发数即可。  
+-maxSession 表示最大能够开启的session个数，当成最大可同时运行的并发数即可。
+  
 3. 将selenium-server-standalone-2.52.0.jar拷贝到所有的远程执行机，并在每台机器都执行下面的命令：
 > java -jar selenium-server-standalone-2.52.0.jar -role node -port 6666 -maxSession 20 -hub http://127.0.0.1:4444/grid/register -Dwebdriver.chrome.driver="C:\Users\Administrator\AppData\Local\Google\Chrome\Application\chromedriver.exe"  -browser "browserName=chrome,maxInstances=5"
 
