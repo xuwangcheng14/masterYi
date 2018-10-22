@@ -501,6 +501,7 @@ public class MailTest {
 	"endTime": "2018-10-15 18:34:13",
 	"title": "Web自动化",
 	"totalCount": 1,
+        "useTime":5232,
 	"env": {
 		"firefoxDriverPath": "F:\\Eclipse2017Workplace\\MasterYIUITest/src/main/resources/geckodriver.exe",
 		"remoteMode": false,
