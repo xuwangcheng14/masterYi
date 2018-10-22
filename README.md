@@ -588,7 +588,7 @@ public class MailTest {
 ![21](https://images.gitee.com/uploads/images/2018/1017/103306_1b9ad42a_431003.png "屏幕截图.png")
 ![22](https://images.gitee.com/uploads/images/2018/1017/103331_f54d1732_431003.png "屏幕截图.png")
 
- **0.0.2beta新增一款Html报告：**   
+- 0.0.2beta版本 新增一款Html报告，  **_该报告会向cdn.bootcss.com请求静态资源，在无外网或者网络环境差的情况下可能无法打开，请注意!!_**      
 ![1](https://images.gitee.com/uploads/images/2018/1022/101939_b5be5809_431003.png "在这里输入图片标题")
 
 - 在测试启动脚本中src/main/test/common/CommonTest中通过 _setReportManagers(IReportManager... reportManagers)_ 方法将多个测试报告处理对象传入，框架将会在测试完成之后按照顺序执行每个处理器：
@@ -597,9 +597,22 @@ public class MailTest {
 - 创建自定义的报告处理器，你可以在测试完成之后，执行发送邮件、入库、创建自定义样式报告等操作，自定义的报告处理器类需要继承 _com.dcits.yi.ui.report.manage_ 包下的 _IReportManager_ 接口，实现 _void create(SuiteReport reportData)_ 方法：
 ![23](https://images.gitee.com/uploads/images/2018/1017/105008_a8b3b53d_431003.png "屏幕截图.png")
 
-### 浏览器驱动文件
+### 驱动文件
 ChromeDriver等浏览器驱动文件均防止在src/main/resource目录下，默认的版本号请查看该目录下的  _driver版本说明.txt_ 文件说明。
 框架在进行测试时，会优先使用该目录下的驱动文件。
+
+- chromedriver=v2.40 对应chrome版本为v66-68  
+chrome下载地址：http://npm.taobao.org/mirrors/chromedriver/  
+crhome和chromedriver的版本对应关系：https://blog.csdn.net/huilan_same/article/details/51896672
+  
+- iedriver=v2.40 为32位，理论上支持ie8 - 11  
+iedriver下载地址：http://selenium-release.storage.googleapis.com/index.html
+
+- operadriver由于用的人比较少，暂时没有放进来
+
+- firefox驱动selenim中已经自带了，也可以自行下载https://github.com/mozilla/geckodriver/releases/  
+如果启动失败，尝试更新下firefox的版本
+
 
 ### 配置文件seleniumConfig.properties
  **seleniumConfig.properties** 配置文件位于项目根目录下，一般来说在IDE中调试时不需要做任何改动：
