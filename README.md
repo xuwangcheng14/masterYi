@@ -72,6 +72,6 @@ ide: Eclipse
 10. 下图为测试日志，在根目录下的report目录下会生成一个html报告
 
 ![7](https://images.gitee.com/uploads/images/2018/1015/183457_58884c3c_431003.png "屏幕截图.png")
-![8](https://images.gitee.com/uploads/images/2018/1015/183522_f7f12f20_431003.png "屏幕截图.png")
+![8](https://images.gitee.com/uploads/images/2018/1022/101939_b5be5809_431003.png "屏幕截图.png")
 
 
