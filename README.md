@@ -16,11 +16,12 @@
 
 在开发过程中参考了以下优秀的自动化测试框架的某些思路或思想，在此感谢：  
 - [Sweetest-小而美的自动化测试框架](https://github.com/tonglei100/sweetest)
-- [Bee-有赞测试团队开发的自动化测试框架](https://segmentfault.com/a/1190000015057723) 
-- 同时感谢功能强大的java工具包  [Hutool](https://gitee.com/xuwangcheng/hutool)
+- [Bee-有赞测试团队开发的自动化测试框架](https://segmentfault.com/a/1190000015057723)  
 
-框架中使用的大都数工具方法都由Hutool工具包封装，建议有兴趣的小伙伴自行阅读Wiki，在框架扩展和脚本编写中可以省去很多精力和时间：
-http://hutool.mydoc.io/
+框架使用或者借鉴了以下开源工具：
+- [功能强大的java工具包Hutool](https://gitee.com/xuwangcheng/hutool)
+- [自动化测试报告](https://github.com/zhangfei19841004/ztest)
+
 
 
 ## 环境要求
